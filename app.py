@@ -9,23 +9,27 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 reponses = []
+quest_num = 0
 
 @app.get("/")
 def start_survey():
     return render_template("survey_start.html",
     survey_title=survey.title,
     survey_instructions = survey.instructions)
+#inject survey
 
 @app.post("/begin")
 def question_redirect():
-    return redirect('/question')
+    return redirect("/question/0")
 
 @app.get("/question/<int:q_num>")
-def populate_question():
-    ##NOTE: Create q_num variable for the question we're on
-    ##QUESTION: Global? If we redeclare in this method will it be available again?
-    answers = survey.questions[2].choices
-    question = survey.questions[2].prompt
-    # @app.get("/questions")
-    # def populate_question()
-    return render_template("question.html", question_prompt=question, choices=answers)
+def populate_question(q_num):
+    global quest_num
+    quest_num = q_num + 1
+    answers = survey.questions[q_num].choices
+    question = survey.questions[q_num]
+    return render_template("question.html", question=question, choices=answers)
+
+@app.post("/answer")
+def answer_redirect():
+    return redirect(f"/question/{quest_num}")
