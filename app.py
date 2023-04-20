@@ -18,8 +18,14 @@ def start_survey():
 
 @app.post("/begin")
 def question_redirect():
-#     return redirect("/questions")
+    return redirect('/question')
 
-# @app.get("/questions")
-# def populate_question():
-    return render_template("question.html")
+@app.get("/question/<int:q_num>")
+def populate_question():
+    ##NOTE: Create q_num variable for the question we're on
+    ##QUESTION: Global? If we redeclare in this method will it be available again?
+    answers = survey.questions[2].choices
+    question = survey.questions[2].prompt
+    # @app.get("/questions")
+    # def populate_question()
+    return render_template("question.html", question_prompt=question, choices=answers)
