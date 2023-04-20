@@ -8,14 +8,13 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 
-reponses = []
+responses = []
 quest_num = 0
 
 @app.get("/")
 def start_survey():
     return render_template("survey_start.html",
-    survey_title=survey.title,
-    survey_instructions = survey.instructions)
+    survey=survey)
 #inject survey
 
 @app.post("/begin")
@@ -32,4 +31,12 @@ def populate_question(q_num):
 
 @app.post("/answer")
 def answer_redirect():
-    return redirect(f"/question/{quest_num}")
+
+    global responses, quest_num
+    responses.append((survey.questions[quest_num].prompt, request.form['answer']))
+    print('responses  ====== ', responses)
+    print("response tuple", responses[0][0])
+    if quest_num == len(survey.questions):
+        return render_template('completion.html')
+    else:
+        return redirect(f"/question/{quest_num}", responses=responses)

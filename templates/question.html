@@ -6,7 +6,7 @@
   <!-- you should have one item like this for every choice -->
   {% for choice in choices %}
   <p>
-    <input type="radio" name="answer" value="value-goes-here" />
+    <input type="radio" name="answer" value="{{choice}}" />
     {{choice}}
   </p>
   {% endfor %}
