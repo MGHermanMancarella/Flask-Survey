@@ -13,7 +13,6 @@ responses = []
 @app.get("/")
 def start_survey():
     """start the survey"""
-
     return render_template("survey_start.html",
     survey=survey)
 
@@ -21,11 +20,12 @@ def start_survey():
 def question_redirect():
     """redirect to first question"""
 
+    session["responses"] = []
     responses.clear()
     return redirect("/question/0")
 
 @app.get("/question/<int:q_num>")
-def populate_question(q_num=len(responses) ):
+def populate_question(q_num):
     """populate current iteration of question/answers"""
 
     answers = survey.questions[q_num].choices
