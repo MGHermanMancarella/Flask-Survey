@@ -2,9 +2,9 @@
 
 <h1>Thanks for completing this survey!</h1>
 <ul>
-{% for response in responses %}
-  <li><b>{{response[0]}}</b>  {{response[1]}}</li>
-{% endfor %}
+  {% for response in responses %}
+  <li><b>{{questions[loop.index0].prompt}}</b> {{responses[loop.index0]}}</li>
+  {% endfor %}
 </ul>
 
 {% endblock %}
